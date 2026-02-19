@@ -1,0 +1,19 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "NetworkSecurity"
+version = "0.0.1"
+description = "Network Security ML Pipeline"
+authors = [
+    { name = "Murtaza", email = "murtazajambu786@gmail.com" }
+]
+readme = "README.md"
+requires-python = ">=3.8"
+
+# Dependencies (same as requirements.txt)
+dependencies = []
+
+[tool.setuptools.packages.find]
+where = ["."]

@@ -1,18 +1,18 @@
 import os
 import sys
 
-from networksecurity.exception.exception import NetworkSecurityException 
-from networksecurity.logging.logger import logging
+from network_security.exception.exception import NetworkSecurityException 
+from network_security.logging.logger import logging
 
-from networksecurity.entity.artifact_entity import DataTransformationArtifact,ModelTrainerArtifact
-from networksecurity.entity.config_entity import ModelTrainerConfig
+from network_security.entity.artifact_entity import DataTransformationArtifact,ModelTrainerArtifact
+from network_security.entity.config_entity import ModelTrainerConfig
 
 
 
-from networksecurity.utils.ml_utils.model.estimator import NetworkModel
-from networksecurity.utils.main_utils.utils import save_object,load_object
-from networksecurity.utils.main_utils.utils import load_numpy_array_data,evaluate_models
-from networksecurity.utils.ml_utils.metric.classification_metric import get_classification_score
+from network_security.utils.ml_utils.model.estimator import NetworkModel
+from network_security.utils.main_utils.utils import save_object,load_object
+from network_security.utils.main_utils.utils import load_numpy_array_data,evaluate_models
+from network_security.utils.ml_utils.metric.classification_metric import get_classification_score
 
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import r2_score
@@ -26,12 +26,13 @@ from sklearn.ensemble import (
 import mlflow
 from urllib.parse import urlparse
 
-import dagshub
+# import dagshub
 #dagshub.init(repo_owner='krishnaik06', repo_name='networksecurity', mlflow=True)
 
-os.environ["MLFLOW_TRACKING_URI"]="https://dagshub.com/krishnaik06/networksecurity.mlflow"
-os.environ["MLFLOW_TRACKING_USERNAME"]="krishnaik06"
-os.environ["MLFLOW_TRACKING_PASSWORD"]="7104284f1bb44ece21e0e2adb4e36a250ae3251f"
+os.environ["MLFLOW_TRACKING_URI"]="file:///usr/local/airflow/mlruns"
+
+# os.environ["MLFLOW_TRACKING_USERNAME"]="krishnaik06"
+# os.environ["MLFLOW_TRACKING_PASSWORD"]="7104284f1bb44ece21e0e2adb4e36a250ae3251f"
 
 
 
@@ -46,7 +47,9 @@ class ModelTrainer:
             raise NetworkSecurityException(e,sys)
         
     def track_mlflow(self,best_model,classificationmetric):
-        mlflow.set_registry_uri("https://dagshub.com/krishnaik06/networksecurity.mlflow")
+        # mlflow.set_tracking_uri(f"sqlite:///{os.path.join(os.getcwd(), 'mlflow.db')}")
+        mlflow.set_experiment("Network Security")
+        # mlflow.set_registry_uri("http://mlflow:5000")
         tracking_url_type_store = urlparse(mlflow.get_tracking_uri()).scheme
         with mlflow.start_run():
             f1_score=classificationmetric.f1_score
@@ -60,15 +63,15 @@ class ModelTrainer:
             mlflow.log_metric("recall_score",recall_score)
             mlflow.sklearn.log_model(best_model,"model")
             # Model registry does not work with file store
-            if tracking_url_type_store != "file":
+            # if tracking_url_type_store != "file":
 
-                # Register the model
-                # There are other ways to use the Model Registry, which depends on the use case,
-                # please refer to the doc for more information:
-                # https://mlflow.org/docs/latest/model-registry.html#api-workflow
-                mlflow.sklearn.log_model(best_model, "model", registered_model_name=best_model)
-            else:
-                mlflow.sklearn.log_model(best_model, "model")
+            #     # Register the model
+            #     # There are other ways to use the Model Registry, which depends on the use case,
+            #     # please refer to the doc for more information:
+            #     # https://mlflow.org/docs/latest/model-registry.html#api-workflow
+            #     mlflow.sklearn.log_model(best_model, "model", registered_model_name="NetworkSecurityModel")
+            # else:
+            #     mlflow.sklearn.log_model(best_model, "model")
 
 
         

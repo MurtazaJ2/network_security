@@ -1,0 +1,18 @@
+services:
+  api-server:
+    volumes:
+      - ./mlruns:/usr/local/airflow/mlruns
+    ports:
+      - "5000:5000"
+
+  scheduler:
+    volumes:
+      - ./mlruns:/usr/local/airflow/mlruns
+
+  triggerer:
+    volumes:
+      - ./mlruns:/usr/local/airflow/mlruns
+
+  dag-processor:
+    volumes:
+      - ./mlruns:/usr/local/airflow/mlruns

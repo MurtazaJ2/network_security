@@ -1,19 +1,29 @@
 from datetime import datetime
 import os
-from networksecurity.constant import training_pipeline
-
-print(training_pipeline.PIPELINE_NAME)
-print(training_pipeline.ARTIFACT_DIR)
+from network_security.constants import training_pipeline
 
 
 class TrainingPipelineConfig:
-    def __init__(self,timestamp=datetime.now()):
-        timestamp=timestamp.strftime("%m_%d_%Y_%H_%M_%S")
-        self.pipeline_name=training_pipeline.PIPELINE_NAME
-        self.artifact_name=training_pipeline.ARTIFACT_DIR
-        self.artifact_dir=os.path.join(self.artifact_name,timestamp)
-        self.model_dir=os.path.join("final_model")
-        self.timestamp: str=timestamp
+    def __init__(self, timestamp: str = None):
+
+        # Priority 1: passed explicitly
+        # Priority 2: environment variable (for BashOperator)
+        # Priority 3: generate new timestamp (local run)
+
+        if timestamp:
+            self.timestamp = timestamp
+        else:
+            env_timestamp = os.getenv("PIPELINE_TIMESTAMP")
+            if env_timestamp:
+                self.timestamp = env_timestamp
+            else:
+                self.timestamp = datetime.now().strftime("%m_%d_%Y_%H_%M_%S")
+
+        self.pipeline_name = training_pipeline.PIPELINE_NAME
+        self.artifact_name = training_pipeline.ARTIFACT_DIR
+        self.artifact_dir = os.path.join(self.artifact_name, self.timestamp)
+
+        self.model_dir = os.path.join("final_model")
 
 
 
@@ -63,6 +73,7 @@ class DataTransformationConfig:
         
 class ModelTrainerConfig:
     def __init__(self,training_pipeline_config:TrainingPipelineConfig):
+        
         self.model_trainer_dir: str = os.path.join(
             training_pipeline_config.artifact_dir, training_pipeline.MODEL_TRAINER_DIR_NAME
         )

@@ -1,0 +1,14 @@
+artifact_uri: file:///usr/local/airflow/mlruns/669008373127704797/085f60fbdadd4e789934824e982184a0/artifacts
+end_time: 1771483679534
+entry_point_name: ''
+experiment_id: '669008373127704797'
+lifecycle_stage: active
+run_id: 085f60fbdadd4e789934824e982184a0
+run_name: nimble-snail-189
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1771483676113
+status: 3
+tags: []
+user_id: astro

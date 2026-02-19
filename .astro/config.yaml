@@ -1,0 +1,4 @@
+project:
+    name: network-security
+volumes:
+  - ./mlruns:/usr/local/airflow/mlruns

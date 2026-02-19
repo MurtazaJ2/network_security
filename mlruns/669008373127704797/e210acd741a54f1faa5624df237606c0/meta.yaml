@@ -1,0 +1,14 @@
+artifact_uri: file:///usr/local/airflow/mlruns/669008373127704797/e210acd741a54f1faa5624df237606c0/artifacts
+end_time: 1771483682323
+entry_point_name: ''
+experiment_id: '669008373127704797'
+lifecycle_stage: active
+run_id: e210acd741a54f1faa5624df237606c0
+run_name: clean-crab-192
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1771483679543
+status: 3
+tags: []
+user_id: astro
